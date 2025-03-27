@@ -4,12 +4,22 @@ import { FiSearch } from 'react-icons/fi';
 import { GoPlusCircle } from 'react-icons/go';
 import { collection, getDocs } from 'firebase/firestore';
 import {db} from './Config/firebase'; // Import Firebase config
-import { HiOutlineUserCircle } from 'react-icons/hi';
-import { IoMdTrash } from 'react-icons/io';
-import { RiEditCircleLine } from 'react-icons/ri';
+
+import ContactCard from './Components/ContactCard';
+import Modals from './Components/Modals';
 
 function App() {
+  
   const [contacts, setContacts] = useState([]);
+  const[isOpen,setOpen]=useState(false)
+  
+  const onOpen=()=>{
+    setOpen(true)
+  }
+
+const onClose=()=>{
+    setOpen(false)
+}
 
   useEffect(() => {
     const getContacts = async () => {
@@ -28,6 +38,7 @@ function App() {
   }, []);
 
   return (
+    <>
     <div className="max-w-[370px] mx-auto px-4">
       <Navigation />
       <div className="flex relative items-center gap-2 mt-4">
@@ -37,31 +48,22 @@ function App() {
           className="bg-transparent border border-white rounded-md h-10 flex-grow text-white pl-10"
           placeholder="Search contacts"
         />
-        <GoPlusCircle className="text-white text-4xl cursor-pointer" />
+        <GoPlusCircle onClick={onOpen} className="text-white text-4xl cursor-pointer" />
       </div>
 
-      <div>
+      <div className='mt-3 '>
       {contacts.map((contacts)=>(
-        <div key={contacts.id} className='bg-yellow'>
-
-
-          <HiOutlineUserCircle></HiOutlineUserCircle>
-          <div className='text-white'>
-            <h2 className=''>{contacts.name}</h2>
-            <p className=''>{contacts.Email}</p>
-          </div>
-
-          <div>
-          <IoMdTrash></IoMdTrash>
-          <RiEditCircleLine></RiEditCircleLine>
-          </div>
-
-        </div>
+        <ContactCard key={contacts.id} contacts={contacts}/>
       ))}
 
       </div>
      
     </div>
+
+    <Modals isOpen={isOpen} onClose={onClose} >
+      
+    </Modals>
+    </>
   );
 }
 
