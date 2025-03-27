@@ -7,6 +7,7 @@ import {db} from './Config/firebase'; // Import Firebase config
 
 import ContactCard from './Components/ContactCard';
 import Modals from './Components/Modals';
+import AddUpdate from './Components/AddUpdate';
 
 function App() {
   
@@ -26,7 +27,12 @@ const onClose=()=>{
       try {
         const contactsRef = collection(db, 'contact');
         const contactSnapshot = await getDocs(contactsRef);
-        const contactList = contactSnapshot.docs.map((doc) => doc.data());
+        const contactList = contactSnapshot.docs.map((doc) => ({
+          id: doc.id, // ✅ Include document ID
+          ...doc.data()
+      }))
+
+        {/**const contactList = contactSnapshot.docs.map((doc) => doc.data());*/}
         setContacts(contactList);
         console.log(contactList)
       } catch (error) {
@@ -59,10 +65,8 @@ const onClose=()=>{
       </div>
      
     </div>
+      <AddUpdate isOpen={isOpen} onClose={onClose}/>
 
-    <Modals isOpen={isOpen} onClose={onClose} >
-      
-    </Modals>
     </>
   );
 }
