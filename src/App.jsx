@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Navigation from './Components/Navigation';
 import { FiSearch } from 'react-icons/fi';
 import { GoPlusCircle } from 'react-icons/go';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import {db} from './Config/firebase'; // Import Firebase config
 
 import ContactCard from './Components/ContactCard';
 import Modals from './Components/Modals';
 import AddUpdate from './Components/AddUpdate';
+
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   
@@ -26,8 +29,11 @@ const onClose=()=>{
     const getContacts = async () => {
       try {
         const contactsRef = collection(db, 'contact');
-        const contactSnapshot = await getDocs(contactsRef);
-        const contactList = contactSnapshot.docs.map((doc) => ({
+        
+
+        onSnapshot(contactsRef,(snapshot)=>{
+          
+        const contactList = snapshot.docs.map((doc) => ({
           id: doc.id, // ✅ Include document ID
           ...doc.data()
       }))
@@ -35,6 +41,12 @@ const onClose=()=>{
         {/**const contactList = contactSnapshot.docs.map((doc) => doc.data());*/}
         setContacts(contactList);
         console.log(contactList)
+        return contactList
+        })
+
+
+
+
       } catch (error) {
         console.error('Error fetching contacts:', error);
       }
@@ -66,7 +78,7 @@ const onClose=()=>{
      
     </div>
       <AddUpdate isOpen={isOpen} onClose={onClose}/>
-
+      <ToastContainer/>
     </>
   );
 }
