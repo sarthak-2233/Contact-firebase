@@ -24,7 +24,7 @@ function App() {
 const onClose=()=>{
     setOpen(false)
 }
-
+  {/*Use effect to render one time in firebase that is required*/}
   useEffect(() => {
     const getContacts = async () => {
       try {
