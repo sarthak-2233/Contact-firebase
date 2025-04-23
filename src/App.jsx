@@ -63,7 +63,7 @@ const onClose=()=>{
         <FiSearch className="text-3xl text-white absolute ml-2" />
         <input
           type="text"
-          className="bg-transparent border border-white rounded-md h-10 flex-grow text-white pl-10"
+          className="bg-transparent border border-black rounded-md h-10 flex-grow text-white pl-10"
           placeholder="Search contacts"
         />
         <GoPlusCircle onClick={onOpen} className="text-white text-4xl cursor-pointer" />
